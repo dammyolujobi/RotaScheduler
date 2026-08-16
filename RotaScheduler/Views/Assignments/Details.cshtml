@@ -1,0 +1,60 @@
+@model RotaScheduler.Models.Entities.Assignment
+
+@{
+    ViewData["Title"] = "Assignment Details";
+}
+
+<div class="container mt-4">
+    <h1>Assignment Details</h1>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Volunteer</dt>
+                <dd class="col-sm-9">@Model.Volunteer.Name (@Model.Volunteer.Email)</dd>
+
+                <dt class="col-sm-3">Role</dt>
+                <dd class="col-sm-9">@Model.Role.Name</dd>
+
+                <dt class="col-sm-3">Service</dt>
+                <dd class="col-sm-9">@Model.Service.Name</dd>
+
+                <dt class="col-sm-3">Date & Time</dt>
+                <dd class="col-sm-9">@Model.Service.ServiceDate.ToString("MMM dd, yyyy") at @Model.Service.StartTime - @Model.Service.EndTime</dd>
+
+                <dt class="col-sm-3">Notes</dt>
+                <dd class="col-sm-9">@Model.Notes</dd>
+
+                <dt class="col-sm-3">Assigned At</dt>
+                <dd class="col-sm-9">@Model.AssignedAt.ToString("MMM dd, yyyy HH:mm")</dd>
+
+                <dt class="col-sm-3">Notification Sent</dt>
+                <dd class="col-sm-9">@(Model.NotificationSent ? "Yes" : "No")</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        
+        @if (!Model.NotificationSent)
+        {
+            <form asp-action="SendNotification" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-info">Send Notification</button>
+            </form>
+        }
+        
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+    </div>
+</div>

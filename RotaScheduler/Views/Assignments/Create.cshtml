@@ -1,0 +1,70 @@
+@model RotaScheduler.ViewModels.AssignmentViewModel
+
+@{
+    ViewData["Title"] = "Create Assignment";
+}
+
+<div class="container mt-4">
+    <h1>Create Assignment</h1>
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <strong>@Model.ServiceName</strong> - @Model.ServiceDate.ToString("MMM dd, yyyy") at @Model.StartTime
+        </div>
+        <div class="card-body">
+            <h5>Role: @Model.RoleName</h5>
+            
+            @if (Model.SuggestedVolunteerId.HasValue)
+            {
+                var suggested = Model.EligibleVolunteers.FirstOrDefault(v => v.Id == Model.SuggestedVolunteerId.Value);
+                if (suggested != null)
+                {
+                    <div class="alert alert-info">
+                        <strong>Suggested Volunteer:</strong> @suggested.Name
+                        @(suggested.LastServedDate.HasValue ? $"(Last served: {suggested.LastServedDate.Value:MMM dd, yyyy})" : "(Never served in this role)")
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-warning">No volunteers suggested. All eligible volunteers may have been recently assigned.</div>
+            }
+
+            <form asp-action="Create" method="post">
+                <input type="hidden" asp-for="ServiceId" />
+                <input type="hidden" asp-for="RoleId" />
+                
+                <div class="mb-3">
+                    <label asp-for="VolunteerId" class="form-label">Select Volunteer</label>
+                    <select asp-for="VolunteerId" class="form-select">
+                        <option value="">-- Select Volunteer --</option>
+                        @foreach (var volunteer in Model.EligibleVolunteers.OrderBy(v => v.LastServedDate).ThenBy(v => v.Name))
+                        {
+                            <option value="@volunteer.Id">
+                                @volunteer.Name 
+                                @(volunteer.LastServedDate.HasValue ? $"(Last: {volunteer.LastServedDate.Value:MMM dd, yyyy})" : "(Never served)")
+                                @(volunteer.Id == Model.SuggestedVolunteerId ? " - SUGGESTED" : "")
+                            </option>
+                        }
+                    </select>
+                    <span asp-validation-for="VolunteerId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Notes" class="form-label">Notes</label>
+                    <textarea asp-for="Notes" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Create Assignment</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

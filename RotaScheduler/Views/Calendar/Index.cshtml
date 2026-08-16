@@ -1,0 +1,88 @@
+@model RotaScheduler.ViewModels.CalendarViewModel
+
+@{
+    ViewData["Title"] = "Calendar";
+}
+
+<div class="container mt-4">
+    <h1>Service Calendar</h1>
+
+    <div class="mb-3">
+        <a asp-action="Index" asp-route-viewType="weekly" asp-route-year="@Model.CurrentDate.Year" asp-route-month="@Model.CurrentDate.Month" 
+           class="btn @(Model.ViewType == "weekly" ? "btn-primary" : "btn-outline-primary")">Weekly View</a>
+        <a asp-action="Index" asp-route-viewType="monthly" asp-route-year="@Model.CurrentDate.Year" asp-route-month="@Model.CurrentDate.Month" 
+           class="btn @(Model.ViewType == "monthly" ? "btn-primary" : "btn-outline-primary")">Monthly View</a>
+        
+        <div class="btn-group ms-3">
+            @{
+                var prevDate = Model.ViewType == "weekly" ? Model.CurrentDate.AddDays(-7) : Model.CurrentDate.AddMonths(-1);
+                var nextDate = Model.ViewType == "weekly" ? Model.CurrentDate.AddDays(7) : Model.CurrentDate.AddMonths(1);
+            }
+            <a asp-action="Index" asp-route-viewType="@Model.ViewType" asp-route-year="@prevDate.Year" asp-route-month="@prevDate.Month" class="btn btn-outline-secondary">&laquo; Previous</a>
+            <a asp-action="Index" asp-route-viewType="@Model.ViewType" asp-route-year="@nextDate.Year" asp-route-month="@nextDate.Month" class="btn btn-outline-secondary">Next &raquo;</a>
+        </div>
+        
+        <span class="ms-3 fs-5">@Model.CurrentDate.ToString("MMMM yyyy")</span>
+    </div>
+
+    @if (!Model.Slots.Any())
+    {
+        <div class="alert alert-info">No services scheduled for this period.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Service</th>
+                        <th>Assigned Roles</th>
+                        <th>Unfilled Roles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var slot in Model.Slots.OrderBy(s => s.ServiceDate).ThenBy(s => s.StartTime))
+                    {
+                        <tr>
+                            <td>@slot.ServiceDate.ToString("MMM dd, yyyy")</td>
+                            <td>@slot.StartTime.ToString(@"hh\:mm") - @slot.EndTime.ToString(@"hh\:mm")</td>
+                            <td>@slot.ServiceName</td>
+                            <td>
+                                @if (slot.Assignments.Any())
+                                {
+                                    <ul class="list-unstyled mb-0">
+                                        @foreach (var assignment in slot.Assignments)
+                                        {
+                                            <li><strong>@assignment.RoleName:</strong> @assignment.VolunteerName</li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">No assignments</span>
+                                }
+                            </td>
+                            <td>
+                                @if (slot.MissingRoles.Any())
+                                {
+                                    <ul class="list-unstyled mb-0 text-danger">
+                                        @foreach (var role in slot.MissingRoles)
+                                        {
+                                            <li>@role</li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <span class="text-success">All roles filled</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

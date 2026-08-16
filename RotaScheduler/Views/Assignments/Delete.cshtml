@@ -1,0 +1,34 @@
+@model RotaScheduler.Models.Entities.Assignment
+
+@{
+    ViewData["Title"] = "Delete Assignment";
+}
+
+<div class="container mt-4">
+    <h1>Delete Assignment</h1>
+
+    <div class="alert alert-danger">
+        Are you sure you want to delete this assignment?
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Volunteer</dt>
+                <dd class="col-sm-9">@Model.Volunteer.Name</dd>
+
+                <dt class="col-sm-3">Role</dt>
+                <dd class="col-sm-9">@Model.Role.Name</dd>
+
+                <dt class="col-sm-3">Service</dt>
+                <dd class="col-sm-9">@Model.Service.Name - @Model.Service.ServiceDate.ToString("MMM dd, yyyy")</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

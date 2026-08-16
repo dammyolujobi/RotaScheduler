@@ -1,0 +1,50 @@
+@model IEnumerable<RotaScheduler.Models.Entities.Assignment>
+
+@{
+    ViewData["Title"] = "Assignments";
+}
+
+<div class="container mt-4">
+    <h1>Volunteer Assignments</h1>
+
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Create New Assignment</a>
+    </p>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Volunteer</th>
+                <th>Role</th>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Notes</th>
+                <th>Notification Sent</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Volunteer.Name</td>
+                    <td>@item.Role.Name</td>
+                    <td>@item.Service.Name</td>
+                    <td>@item.Service.ServiceDate.ToString("MMM dd, yyyy")</td>
+                    <td>@item.Notes</td>
+                    <td>@(item.NotificationSent ? "Yes" : "No")</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

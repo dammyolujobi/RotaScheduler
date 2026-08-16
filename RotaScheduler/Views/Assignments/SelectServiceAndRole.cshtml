@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Create Assignment - Select Service and Role";
+    var services = ViewBag.Services as List<RotaScheduler.Models.Entities.Service>;
+    var roles = ViewBag.Roles as List<RotaScheduler.Models.Entities.Role>;
+}
+
+<div class="container mt-4">
+    <h1>Create New Assignment</h1>
+
+    <form asp-action="Create" method="get">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="serviceId" class="form-label">Select Service</label>
+                <select name="serviceId" id="serviceId" class="form-select" required>
+                    <option value="">-- Select a Service --</option>
+                    @foreach (var service in services)
+                    {
+                        <option value="@service.Id">@service.Name - @service.ServiceDate.ToString("MMM dd, yyyy") at @service.StartTime</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="roleId" class="form-label">Select Role</label>
+                <select name="roleId" id="roleId" class="form-select" required>
+                    <option value="">-- Select a Role --</option>
+                    @foreach (var role in roles)
+                    {
+                        <option value="@role.Id">@role.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Continue</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

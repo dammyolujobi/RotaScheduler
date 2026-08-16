@@ -1,0 +1,34 @@
+@model RotaScheduler.Models.Entities.Unavailability
+
+@{
+    ViewData["Title"] = "Delete Unavailability";
+}
+
+<div class="container mt-4">
+    <h1>Delete Unavailability</h1>
+
+    <div class="alert alert-danger">
+        Are you sure you want to delete this unavailability record?
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Volunteer</dt>
+                <dd class="col-sm-9">@Model.Volunteer.Name</dd>
+
+                <dt class="col-sm-3">Date Range</dt>
+                <dd class="col-sm-9">@Model.StartDate.ToString("MMM dd, yyyy") to @Model.EndDate.ToString("MMM dd, yyyy")</dd>
+
+                <dt class="col-sm-3">Reason</dt>
+                <dd class="col-sm-9">@Model.Reason</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

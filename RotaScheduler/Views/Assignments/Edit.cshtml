@@ -1,0 +1,33 @@
+@model RotaScheduler.ViewModels.AssignmentViewModel
+
+@{
+    ViewData["Title"] = "Edit Assignment";
+}
+
+<div class="container mt-4">
+    <h1>Edit Assignment</h1>
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
+        
+        <div class="mb-3">
+            <label asp-for="Notes" class="form-label">Notes</label>
+            <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="Notes" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 form-check">
+            <input type="checkbox" asp-for="NotificationSent" class="form-check-input" disabled />
+            <label asp-for="NotificationSent" class="form-check-label">Notification Sent (read-only)</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

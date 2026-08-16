@@ -1,0 +1,47 @@
+@model RotaScheduler.Models.Entities.Unavailability
+
+@{
+    ViewData["Title"] = "Add Unavailability";
+}
+
+<div class="container mt-4">
+    <h1>Add Volunteer Unavailability</h1>
+
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="VolunteerId" class="form-label">Volunteer</label>
+            <select asp-for="VolunteerId" asp-items="ViewBag.Volunteers" class="form-select">
+                <option value="">-- Select Volunteer --</option>
+            </select>
+            <span asp-validation-for="VolunteerId" class="text-danger"></span>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="StartDate" class="form-label">Start Date</label>
+                <input type="date" asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="EndDate" class="form-label">End Date</label>
+                <input type="date" asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Reason" class="form-label">Reason (optional)</label>
+            <textarea asp-for="Reason" class="form-control" rows="2" placeholder="e.g., Vacation, Medical leave"></textarea>
+            <span asp-validation-for="Reason" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Unavailability</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

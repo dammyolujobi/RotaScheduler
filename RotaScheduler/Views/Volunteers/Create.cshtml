@@ -1,0 +1,66 @@
+@model RotaScheduler.ViewModels.VolunteerViewModel
+
+@{
+    ViewData["Title"] = "Add Volunteer";
+}
+
+<h2>➕ Add New Volunteer</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            
+            <div class="mb-3">
+                <label asp-for="Phone" class="form-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            
+            <div class="mb-3">
+                <label asp-for="AvailabilityNotes" class="form-label"></label>
+                <textarea asp-for="AvailabilityNotes" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="AvailabilityNotes" class="text-danger"></span>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Eligible Roles</label>
+                @foreach (var role in Model.AvailableRoles)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" 
+                               name="SelectedRoleIds" value="@role.Id" id="role_@role.Id" />
+                        <label class="form-check-label" for="role_@role.Id">@role.Name</label>
+                    </div>
+                }
+            </div>
+            
+            <div class="mb-3 form-check">
+                <input asp-for="IsActive" class="form-check-input" />
+                <label asp-for="IsActive" class="form-check-label"></label>
+            </div>
+            
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

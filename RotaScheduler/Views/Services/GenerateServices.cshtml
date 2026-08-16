@@ -1,0 +1,59 @@
+@model RotaScheduler.ViewModels.GenerateServicesViewModel
+
+@{
+    ViewData["Title"] = "Generate Recurring Services";
+}
+
+<div class="container mt-4">
+    <h1>Generate Recurring Services</h1>
+
+    <p class="text-muted">Bulk-create recurring Sunday services over a date range.</p>
+
+    <form asp-action="GenerateServices" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="ServiceName" class="form-label">Service Name</label>
+            <input asp-for="ServiceName" class="form-control" placeholder="e.g., Sunday Morning Service" />
+            <span asp-validation-for="ServiceName" class="text-danger"></span>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="StartDate" class="form-label">Start Date</label>
+                <input type="date" asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="EndDate" class="form-label">End Date</label>
+                <input type="date" asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="StartTime" class="form-label">Start Time</label>
+                <input type="time" asp-for="StartTime" class="form-control" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="EndTime" class="form-label">End Time</label>
+                <input type="time" asp-for="EndTime" class="form-control" />
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i>
+            Services will be created for all Sundays within the selected date range.
+        </div>
+
+        <button type="submit" class="btn btn-success">Generate Services</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

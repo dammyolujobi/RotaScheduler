@@ -1,0 +1,54 @@
+# Build results
+bin/
+obj/
+Debug/
+Release/
+.NET/
+
+# Visual Studio
+.vs/
+.vscode/
+*.sln.iml
+*.user
+*.suo
+*.cache
+*.csproj.user
+
+# ReSharper
+.idea/
+*.resharper
+*.resharper.user
+_ReSharper.*/
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+
+# Build artifacts
+*.dll
+*.pdb
+*.exe
+*.so
+*.dylib
+
+# IDE & Editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# OS
+.env
+.env.local
+
+# Application specific
+appsettings.Development.json
+appsettings.Production.json
+
+# SonarQube
+.sonarqube/
+
+# Node modules (if using npm)
+node_modules/
